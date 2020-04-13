@@ -1,0 +1,193 @@
+public static final class Utils {
+
+    public static final class Argument extends Delegated<String> {
+
+        public Argument(final java.util.function.Supplier<CommandData> data) {
+            super(
+                () -> {
+                    final var arguments = data.get().arguments;
+                    if (arguments.isEmpty()) {
+                        throw new RuntimeException("argument was not provided");
+                    }
+                    return arguments.get(0);
+                }
+            );
+        }
+
+        public Argument(final CommandData data) {
+            this(() -> data);
+        }
+    }
+
+    public static abstract class Delegated<T> implements java.util.function.Supplier<T> {
+
+        private final java.util.function.Supplier<? extends T> delegate;
+
+        protected Delegated(final java.util.function.Supplier<? extends T>  delegate) {
+            this.delegate = delegate;
+        }
+
+        @Override
+        public final T get() {
+            return this.delegate.get();
+        }
+    }
+
+    public static final class ErrorsFromCommandData extends Delegated<java.util.List<String>> {
+
+        public ErrorsFromCommandData(final java.util.function.Supplier<CommandData> data) {
+            super(() -> data.get().errors);
+        }
+
+        public ErrorsFromCommandData(final CommandData data) {
+            this(() -> data);
+        }
+    }
+
+    public static final class ErrorsFromMissedArguments extends Delegated<java.util.List<String>> {
+
+        public ErrorsFromMissedArguments(final java.util.function.Supplier<CommandData> data) {
+            super(
+                () -> {
+                    final var result = new java.util.ArrayList<String>();
+                    if (data.get().arguments.isEmpty()) {
+                        result.add("no arguments were provided");
+                    }
+                    return result;
+                }
+            );
+        }
+
+        public ErrorsFromMissedArguments(final CommandData data) {
+            this(() -> data);
+        }
+    }
+
+    public static final class ErrorsFromMissedOptions extends Delegated<java.util.List<String>> {
+
+        public ErrorsFromMissedOptions(final java.util.function.Supplier<CommandData> data, final String... required) {
+            super(
+                () -> {
+                    final var result = new java.util.ArrayList<String>();
+                    final var options = data.get().options;
+                    for (final var key : required) {
+                        if (!options.containsKey(key)) {
+                            result.add("missed required option: " + key);
+                        }
+                    }
+                    return result;
+                }
+            );
+        }
+
+        public ErrorsFromMissedOptions(final CommandData data, final String... required) {
+            this(() -> data, required);
+        }
+    }
+
+    public static final class ListConcatenated<T> extends Delegated<java.util.List<T>> {
+
+        @SafeVarargs
+        public ListConcatenated(final java.util.function.Supplier<java.util.List<T>>... lists) {
+            super(
+                () -> java.util.stream.Stream
+                    .of(lists)
+                    .flatMap(it -> it.get().stream())
+                    .collect(java.util.stream.Collectors.toList())
+            );
+        }
+    }
+
+    public static final class OptionBoolean extends Delegated<Boolean> {
+        public OptionBoolean(final java.util.function.Supplier<CommandData> data, final String key) {
+            super(
+                () -> !new OptionList(data, key).get().isEmpty()
+            );
+        }
+    }
+
+    public static final class OptionDouble extends Delegated<Double> {
+        public OptionDouble(final java.util.function.Supplier<CommandData> data, final String key, final java.util.function.Supplier<String> fallback) {
+            super(
+                () -> Double.valueOf(new OptionString(data, key, fallback).get())
+            );
+        }
+
+        public OptionDouble(final java.util.function.Supplier<CommandData> data, final String key, final String fallback) {
+            this(data, key, () -> fallback);
+        }
+
+        public OptionDouble(final java.util.function.Supplier<CommandData> data, final String key) {
+            this(data, key, new OptionFallback<>(key));
+        }
+    }
+
+    public static final class OptionFallback<T> extends Delegated<T> {
+        public OptionFallback(final String key) {
+            super(
+                () -> {
+                    throw new RuntimeException("option " + key + " was not provided");
+                }
+            );
+        }
+    }
+
+    public static final class OptionInt extends Delegated<Integer> {
+        public OptionInt(final java.util.function.Supplier<CommandData> data, final String key, final java.util.function.Supplier<String> fallback) {
+            super(
+                () -> Integer.valueOf(new OptionString(data, key, fallback).get())
+            );
+        }
+
+        public OptionInt(final java.util.function.Supplier<CommandData> data, final String key, final String fallback) {
+            this(data, key, () -> fallback);
+        }
+
+        public OptionInt(final java.util.function.Supplier<CommandData> data, final String key) {
+            this(data, key, new OptionFallback<>(key));
+        }
+    }
+
+    public static final class OptionList extends Delegated<java.util.List<String>> {
+        public OptionList(final java.util.function.Supplier<CommandData> data, final String key) {
+            super(
+                () -> java.util.Optional
+                    .ofNullable(data.get().options)
+                    .map(it -> it.get(key))
+                    .orElseGet(java.util.List::of)
+            );
+        }
+    }
+
+    public static final class OptionProvided extends Delegated<Boolean> {
+        public OptionProvided(final java.util.function.Supplier<CommandData> data, final String key) {
+            super(() -> !new OptionList(data, key).get().isEmpty());
+        }
+    }
+
+    public static final class OptionString extends Delegated<String> {
+        public OptionString(final java.util.function.Supplier<CommandData> data, final String key, final java.util.function.Supplier<String> fallback) {
+            super(
+                () -> {
+                    final String result;
+                    final var list = new OptionList(data, key).get();
+                    if (list.isEmpty()) {
+                        result = fallback.get();
+                    } else {
+                        result = list.get(0);
+                    }
+                    return result;
+                }
+            );
+        }
+
+        public OptionString(final java.util.function.Supplier<CommandData> data, final String key, final String fallback) {
+            this(data, key, () -> fallback);
+        }
+
+        public OptionString(final java.util.function.Supplier<CommandData> data, final String key) {
+            this(data, key, new OptionFallback<>(key));
+        }
+    }
+
+}

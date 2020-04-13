@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<command name="commandRoot" description="root description" input="java -jar &lt;JAR&gt;">
+    <options>
+        <option name="option1" description="description 1"/>
+        <option name="option2" description="description 2" default="default2" required="true" short="a" type="string"/>
+        <option name="option3" description="description 3" type="list"/>
+        <option name="option4" description="description 4" type="double"/>
+        <option name="option5" description="description 5" type="int"/>
+    </options>
+    <argument name="argument" required="true" multiple="true"/>
+    <commands>
+        <command name="subCommand1" description="sub command description 1">
+            <argument name="argument" required="false" multiple="false"/>
+        </command>
+        <command name="subCommand2" description="sub command description 2"/>
+    </commands>
+</command>

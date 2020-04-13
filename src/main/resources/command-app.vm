@@ -1,0 +1,36 @@
+public static final class App implements Runnable {
+
+    private final java.util.function.Supplier<CommandData> data;
+
+    private final Runnable logic;
+
+    public App(final java.util.function.Supplier<CommandData> data, final Runnable logic) {
+        this.data = data;
+        this.logic = logic;
+    }
+
+    public App(final CommandData data, final Runnable logic) {
+        this(() -> data, logic);
+    }
+
+    public App(final String[] arguments, final Runnable logic) {
+        this(new ParsedData(arguments), logic);
+    }
+
+    @Override
+    public void run() {
+        final var data = this.data.get();
+        if (data.help) {
+            new Help.Print().run();
+        } else if (data.version) {
+            new Version.Print().run();
+        } else {
+            final var errors = new Errors(data).get();
+            if (errors.isEmpty()) {
+                this.logic.run();
+            } else {
+                System.out.println(errors.get(0));
+            }
+        }
+    }
+}

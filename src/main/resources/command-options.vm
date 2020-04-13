@@ -1,0 +1,60 @@
+public static final class Options {
+    #foreach($option in $command.options.option)
+        #set($class = $StringUtils.capitalize($option.name))
+        public static final class $class extends Utils.Delegated
+            #if($option.type.equals('boolean'))
+                <Boolean> {
+
+                public $class(final java.util.function.Supplier<CommandData> data) {
+                    super(new Utils.OptionBoolean(data, "$option.name"));
+                }
+            #elseif($option.type.equals('double'))
+                <Double> {
+
+                public $class(final java.util.function.Supplier<CommandData> data) {
+                    super(new Utils.OptionDouble(data, "$option.name"#if($option.default), "$option.default"#end));
+                }
+            #elseif($option.type.equals('int'))
+                <Integer> {
+
+                public $class(final java.util.function.Supplier<CommandData> data) {
+                    super(new Utils.OptionInt(data, "$option.name"#if($option.default), "$option.default"#end));
+                }
+            #elseif($option.type.equals('list'))
+                <java.util.List<String>> {
+
+                public $class(final java.util.function.Supplier<CommandData> data) {
+                    super(new Utils.OptionList(data, "$option.name"));
+                }
+            #elseif($option.type.equals('string'))
+                <String> {
+
+                public $class(final java.util.function.Supplier<CommandData> data) {
+                    super(new Utils.OptionString(data, "$option.name"#if($option.default), "$option.default"#end));
+                }
+            #end
+
+            public $class(final CommandData data) {
+                this(() -> data);
+            }
+
+            public $class(final String... arguments) {
+                this(new ParsedData(arguments));
+            }
+
+            public static final class Provided extends Utils.Delegated<Boolean> {
+                public Provided(final java.util.function.Supplier<CommandData> data) {
+                    super(new Utils.OptionProvided(data, "$option.name"));
+                }
+
+                public Provided(final CommandData data) {
+                    this(() -> data);
+                }
+
+                public Provided(final String... arguments) {
+                    this(new ParsedData(arguments));
+                }
+            }
+        }
+    #end
+}

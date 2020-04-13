@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:complexType name="command">
+        <xs:sequence>
+            <xs:element name="options" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence maxOccurs="unbounded">
+                        <xs:element name="option">
+                            <xs:complexType>
+                                <xs:attribute name="default">
+                                    <xs:simpleType>
+                                        <xs:restriction base="xs:string">
+                                            <xs:minLength value="1"/>
+                                        </xs:restriction>
+                                    </xs:simpleType>
+                                </xs:attribute>
+                                <xs:attribute name="description" use="required">
+                                    <xs:simpleType>
+                                        <xs:restriction base="xs:string">
+                                            <xs:minLength value="1"/>
+                                        </xs:restriction>
+                                    </xs:simpleType>
+                                </xs:attribute>
+                                <xs:attribute name="name" use="required">
+                                    <xs:simpleType>
+                                        <xs:restriction base="xs:string">
+                                            <xs:pattern value="[a-z][a-zA-Z\d_$]+"/>
+                                        </xs:restriction>
+                                    </xs:simpleType>
+                                </xs:attribute>
+                                <xs:attribute name="required" default="false">
+                                    <xs:simpleType>
+                                        <xs:restriction base="xs:boolean"/>
+                                    </xs:simpleType>
+                                </xs:attribute>
+                                <xs:attribute name="short">
+                                    <xs:simpleType>
+                                        <xs:restriction base="xs:string">
+                                            <xs:length value="1"/>
+                                        </xs:restriction>
+                                    </xs:simpleType>
+                                </xs:attribute>
+                                <xs:attribute name="type" default="boolean">
+                                    <xs:simpleType>
+                                        <xs:restriction base="xs:string">
+                                            <xs:enumeration value="boolean"/>
+                                            <xs:enumeration value="double"/>
+                                            <xs:enumeration value="int"/>
+                                            <xs:enumeration value="list"/>
+                                            <xs:enumeration value="string"/>
+                                        </xs:restriction>
+                                    </xs:simpleType>
+                                </xs:attribute>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+                <xs:unique name="nameForCommandOptions">
+                    <xs:selector xpath="option"/>
+                    <xs:field xpath="@name"/>
+                </xs:unique>
+                <xs:unique name="shortForCommandOptions">
+                    <xs:selector xpath="option"/>
+                    <xs:field xpath="@short"/>
+                </xs:unique>
+            </xs:element>
+            <xs:element name="argument" minOccurs="0">
+                <xs:complexType>
+                    <xs:attribute name="multiple" default="false">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:boolean"/>
+                        </xs:simpleType>
+                    </xs:attribute>
+                    <xs:attribute name="name" use="required">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:minLength value="1"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:attribute>
+                    <xs:attribute name="required" default="true">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:boolean"/>
+                        </xs:simpleType>
+                    </xs:attribute>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="commands" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence maxOccurs="unbounded">
+                        <xs:element name="command" type="command"/>
+                    </xs:sequence>
+                </xs:complexType>
+                <xs:unique name="nameForNestedCommands">
+                    <xs:selector xpath="command"/>
+                    <xs:field xpath="@name"/>
+                </xs:unique>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="description" use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:minLength value="1"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="input">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:minLength value="1"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="name" use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:pattern value="[a-z][a-zA-Z\d_$]*"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:complexType>
+    <xs:element name="command" type="command"/>
+</xs:schema>

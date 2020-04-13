@@ -1,0 +1,27 @@
+package $package;
+public final class $class {
+    #command($root)
+    #parse('command-data.vm')
+    #parse('utils.vm')
+}
+#macro(command $command)
+    public static final class $StringUtils.capitalize($command.name) {
+        #parse('command-app.vm')
+        #if($command.argument)
+            #parse('command-argument.vm')
+        #end
+        #parse('command-errors.vm')
+        #parse('command-help.vm')
+        #if($command.options)
+            #parse('command-options.vm')
+        #end
+        #parse('command-parsed-data.vm')
+        #parse('command-requested.vm')
+        #if($command == $root && $version)
+            #parse('command-version.vm')
+        #end
+        #foreach($subCommand in $command.commands.command)
+            #command($subCommand)
+        #end
+    }
+#end

@@ -1,0 +1,9 @@
+public static final class CommandData {
+
+    public final java.util.List<String> arguments = new java.util.ArrayList<>();
+    public final java.util.List<String> errors = new java.util.ArrayList<>();
+    public boolean help;
+    public final java.util.Map<String, java.util.List<String>> options = new java.util.HashMap<>();
+    public boolean requested;
+    public boolean version;
+}

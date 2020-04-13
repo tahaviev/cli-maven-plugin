@@ -1,0 +1,128 @@
+public static final class ParsedData implements java.util.function.Supplier<CommandData> {
+
+    private final String[] arguments;
+
+    public ParsedData(final String... arguments) {
+        this.arguments = arguments;
+    }
+
+    @Override
+    public CommandData get() {
+        final var result = new CommandData();
+        #set($ancestors = $commandToAncestors.get($command))
+        #if($ancestors)
+            if (this.arguments.length < $ancestors.size()) {
+                return result;
+            }
+            #foreach($ancestor in $ancestors.subList(1, $ancestors.size()))
+                #set($index = $velocityCount - 1)
+                if (!this.arguments[$index].equals("$ancestor.name")) {
+                    return result;
+                }
+            #end
+            #set($index = $ancestors.size() - 1)
+            if (!this.arguments[$index].equals("$command.name")) {
+                return result;
+            }
+            #if($command.commands)
+                if (this.arguments.length > $ancestors.size()) {
+                    #foreach($subcommand in $command.commands.command)
+                        if (this.arguments[$ancestors.size()].equals("$subcommand.name")) {
+                            return result;
+                        }
+                    #end
+                }
+            #end
+        #else
+            #if($command.commands)
+                if (this.arguments.length > 0) {
+                    #foreach($subcommand in $command.commands.command)
+                        if (this.arguments[0].equals("$subcommand.name")) {
+                            return result;
+                        }
+                    #end
+                }
+            #end
+        #end
+        result.requested = true;
+        for (int index = #if($ancestors)$ancestors.size()#else 0#end; index < this.arguments.length; index++) {
+            final var argument = this.arguments[index];
+            if (argument.equals("--help") || argument.equals("-h")) {
+                result.help = true;
+            }
+            #if(!$ancestors)
+                else if (argument.equals("--version") || argument.equals("-v")) {
+                    result.version = true;
+                }
+            #end
+            #foreach($option in $command.options.option)
+                #if($option.type.equals('boolean'))
+                    else if (argument.equals("--$option.name") #if($option.short)|| argument.equals("-$option.short")#end) {
+                        result.options.computeIfAbsent("$option.name", it -> new java.util.ArrayList<>()).add("true");
+                    }
+                #else
+                    else if (argument.equals("--$option.name") #if($option.short)|| argument.equals("-$option.short")#end) {
+                        index++;
+                        if (index < this.arguments.length) {
+                            final var value = this.arguments[index];
+                            #putValue()
+                        } else {
+                            result.errors.add("missing value for option $option.name");
+                        }
+                    }
+                    else if (argument.startsWith("--$option.name=")) {
+                        final var value = argument.substring("--$option.name=".length());
+                        #putValue()
+                    }
+                    #macro(putValue)
+                        if (result.options.containsKey("$option.name")) {
+                            result.errors.add("option $option.name should not have more than one value");
+                        }
+                        #if($option.type.equals('double'))
+                            else if (!value.matches("(-?)(0|([1-9][0-9]*))(\\.[0-9]+)?")) {
+                                result.errors.add(value + " does not match double type");
+                            }
+                        #elseif($option.type.equals('int'))
+                            else if (!value.matches("(-?)(0|([1-9][0-9]*))")) {
+                                result.errors.add(value + " does not match int type");
+                            }
+                        #else
+                            else if (value.startsWith("-")) {
+                                result.errors.add("missing value for option $option.name");
+                            }
+                        #end
+                        else {
+                            result.options.computeIfAbsent("$option.name", it -> new java.util.ArrayList<>()).add(value);
+                        }
+                    #end
+                #end
+            #end
+            else if (argument.startsWith("-")) {
+                result.errors.add("unrecognized option: " + argument);
+            }
+            else {
+                #if($command.argument)
+                    #if($command.argument.multiple)
+                        for (; index < this.arguments.length; index++) {
+                            if (this.arguments[index].startsWith("-")) {
+                                result.errors.add("option input " + this.arguments[index] + " must be placed before arguments");
+                            } else {
+                                result.arguments.add(this.arguments[index]);
+                            }
+                        }
+                    #else
+                        if (index != this.arguments.length - 1) {
+                            result.errors.add("only one argument must be provided");
+                        } else {
+                            result.arguments.add(this.arguments[index]);
+                        }
+                    #end
+                #else
+                    result.errors.add("the arguments were not expected");
+                #end
+            }
+        }
+        return result;
+    }
+
+}

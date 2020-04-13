@@ -1,0 +1,31 @@
+public static final class Errors extends Utils.Delegated<java.util.List<String>> {
+
+    public Errors(final java.util.function.Supplier<CommandData> data) {
+        super(
+            new Utils.ListConcatenated<>(
+                new Utils.ErrorsFromCommandData(data)
+                #if($command.argument.required)
+                    , new Utils.ErrorsFromMissedArguments(data)
+                #end
+                #if($command.options)
+                    , new Utils.ErrorsFromMissedOptions(
+                        data
+                        #foreach($option in $command.options.option)
+                            #if($option.required && !$option.default)
+                                , "$option.name"
+                            #end
+                        #end
+                    )
+                #end
+            )
+        );
+    }
+
+    public Errors(final CommandData data) {
+        this(() -> data);
+    }
+
+    public Errors(final String... arguments) {
+        this(new ParsedData(arguments));
+    }
+}

@@ -1,0 +1,14 @@
+public static final class Requested extends Utils.Delegated<Boolean> {
+
+    public Requested(final java.util.function.Supplier<CommandData> data) {
+        super(() -> data.get().requested);
+    }
+
+    public Requested(final CommandData data) {
+        this(() -> data);
+    }
+
+    public Requested(final String... arguments) {
+        this(new ParsedData(arguments));
+    }
+}

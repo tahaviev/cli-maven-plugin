@@ -10,8 +10,16 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Supplier;
 
+/**
+ * Mapping between command and their ancestors.
+ */
 public final class MappingCommandToAncestors extends Delegated<Map<Command, List<Command>>> {
 
+    /**
+     * Constructor.
+     *
+     * @param root root command factory.
+     */
     public MappingCommandToAncestors(final Supplier<? extends Command> root) {
         super(
             () -> {
@@ -22,6 +30,12 @@ public final class MappingCommandToAncestors extends Delegated<Map<Command, List
         );
     }
 
+    /**
+     * Fills result map.
+     *
+     * @param parent command
+     * @param result result map
+     */
     private static void walk(
         final Command parent,
         final Map<? super Command, List<Command>> result

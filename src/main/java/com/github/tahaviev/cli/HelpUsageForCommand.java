@@ -8,8 +8,17 @@ import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+/**
+ * Help usage for a command.
+ */
 public final class HelpUsageForCommand extends Delegated<String> {
 
+    /**
+     * Constructor.
+     *
+     * @param supplier command factory
+     * @param ancestors command ancestors
+     */
     public HelpUsageForCommand(
         final Supplier<? extends Command> supplier,
         final Supplier<? extends List<Command>> ancestors
@@ -42,8 +51,17 @@ public final class HelpUsageForCommand extends Delegated<String> {
         );
     }
 
+    /**
+     * Help usage for a command.
+     */
     public static final class FromAncestorMap extends Delegated<String> {
 
+        /**
+         * Constructor.
+         *
+         * @param supplier command factory
+         * @param ancestors command ancestors
+         */
         public FromAncestorMap(
             final Supplier<? extends Command> supplier,
             final Supplier<? extends Map<Command, List<Command>>> ancestors
@@ -56,6 +74,12 @@ public final class HelpUsageForCommand extends Delegated<String> {
             );
         }
 
+        /**
+         * Constructor.
+         *
+         * @param command command
+         * @param ancestors command ancestors
+         */
         public FromAncestorMap(
             final Command command,
             final Supplier<? extends Map<Command, List<Command>>> ancestors
@@ -63,6 +87,11 @@ public final class HelpUsageForCommand extends Delegated<String> {
             this(() -> command, ancestors);
         }
 
+        /**
+         * Constructor.
+         *
+         * @param supplier command factory
+         */
         public FromAncestorMap(final Supplier<? extends Command> supplier) {
             this(supplier, new MappingCommandToAncestors(supplier));
         }

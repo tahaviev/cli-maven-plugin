@@ -1,18 +1,22 @@
 package com.github.tahaviev.cli.util;
 
 import com.github.tahaviev.cli.matchers.OnGet;
-import java.util.Collection;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.hasSize;
 
+/**
+ * {@link StringsDividedByLengthAndDelimiter} tests.
+ */
 public final class StringsDividedByLengthAndDelimiterTest {
 
+    /**
+     * Can divide input with large length.
+     */
     @Test
-    public void divideInputOnLargeLength() {
+    public void divideInputWithLargeLength() {
         assertThat(
             new StringsDividedByLengthAndDelimiter("foo bar", 5, ' '),
             new OnGet<>(
@@ -21,8 +25,11 @@ public final class StringsDividedByLengthAndDelimiterTest {
         );
     }
 
+    /**
+     * Cannot divide input with small length.
+     */
     @Test
-    public void dontDivideInputOnSmallLength() {
+    public void dontDivideInputWithSmallLength() {
         assertThat(
             new StringsDividedByLengthAndDelimiter("foo bar", 10, ' '),
             new OnGet<>(
@@ -31,8 +38,11 @@ public final class StringsDividedByLengthAndDelimiterTest {
         );
     }
 
+    /**
+     * Cannot divide large input.
+     */
     @Test
-    public void dontDivideLargeString() {
+    public void dontDivideLargeInput() {
         assertThat(
             new StringsDividedByLengthAndDelimiter("foo largeWord bar", 5, ' '),
             new OnGet<>(
@@ -41,8 +51,11 @@ public final class StringsDividedByLengthAndDelimiterTest {
         );
     }
 
+    /**
+     * Cannot divide last large word.
+     */
     @Test
-    public void dontDivideLastLargeString() {
+    public void dontDivideLastLargeWord() {
         assertThat(
             new StringsDividedByLengthAndDelimiter("foo largeWord", 5, ' '),
             new OnGet<>(

@@ -5,9 +5,20 @@ import java.io.InputStream;
 import java.util.Objects;
 import java.util.function.Supplier;
 
+/**
+ * Input stream from classpath file.
+ */
 public final class InputFromClasspath extends Delegated<InputStream> {
 
-    public InputFromClasspath(final String name, final Supplier<? extends ClassLoader> loader) {
+    /**
+     * Constructor.
+     *
+     * @param name file name
+     * @param loader class loader
+     */
+    public InputFromClasspath(
+        final String name, final Supplier<? extends ClassLoader> loader
+    ) {
         super(
             () -> {
                 try {
@@ -26,10 +37,21 @@ public final class InputFromClasspath extends Delegated<InputStream> {
         );
     }
 
+    /**
+     * Constructor.
+     *
+     * @param name file name
+     * @param clazz class to obtain class loader
+     */
     public InputFromClasspath(final String name, final Class<?> clazz) {
         this(name, clazz::getClassLoader);
     }
 
+    /**
+     * Constructor.
+     *
+     * @param name file name
+     */
     public InputFromClasspath(final String name) {
         this(name, InputFromClasspath.class);
     }

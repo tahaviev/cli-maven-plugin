@@ -85,6 +85,27 @@
                 </configuration>
             </plugin>
             <plugin>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>3.13.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                            <goal>cpd-check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <compileSourceRoots>
+                        <sourceRoot>${project.build.sourceDirectory}</sourceRoot>
+                    </compileSourceRoots>
+                    <rulesets>src/pmd/ruleset.xml</rulesets>
+                    <includeTests>true</includeTests>
+                    <linkXRef>false</linkXRef>
+                    <sourceEncoding>UTF-8</sourceEncoding>
+                </configuration>
+            </plugin>
+            <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
                 <version>3.1.0</version>
                 <configuration>

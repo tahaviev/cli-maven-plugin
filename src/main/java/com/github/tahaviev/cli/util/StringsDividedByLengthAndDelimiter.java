@@ -5,8 +5,18 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
 
+/**
+ * String divided by length and delimiter.
+ */
 public final class StringsDividedByLengthAndDelimiter extends Delegated<List<String>> {
 
+    /**
+     * Constructor.
+     *
+     * @param input input string
+     * @param length length
+     * @param delimiter delimiter
+     */
     public StringsDividedByLengthAndDelimiter(
         final Supplier<String> input, final int length, final char delimiter
     ) {
@@ -35,6 +45,13 @@ public final class StringsDividedByLengthAndDelimiter extends Delegated<List<Str
         );
     }
 
+    /**
+     * Constructor.
+     *
+     * @param input input string
+     * @param length length
+     * @param delimiter delimiter
+     */
     public StringsDividedByLengthAndDelimiter(
         final String input, final int length, final char delimiter
     ) {

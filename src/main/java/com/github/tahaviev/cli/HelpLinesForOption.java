@@ -10,8 +10,18 @@ import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+/**
+ * Help lines for option.
+ */
 public final class HelpLinesForOption extends Delegated<List<String>> {
 
+    /**
+     * Constructor.
+     *
+     * @param supplier option factory
+     * @param width maximum length for help line
+     * @param keysWidth option keys width
+     */
     public HelpLinesForOption(
         final Supplier<? extends Command.Options.Option> supplier,
         final int width,
@@ -63,10 +73,20 @@ public final class HelpLinesForOption extends Delegated<List<String>> {
         );
     }
 
+    /**
+     * Constructor.
+     *
+     * @param supplier option factory.
+     */
     public HelpLinesForOption(final Supplier<? extends Command.Options.Option> supplier) {
         this(supplier, 80, 40);
     }
 
+    /**
+     * Constructor.
+     *
+     * @param option option
+     */
     public HelpLinesForOption(final Command.Options.Option option) {
         this(() -> option);
     }

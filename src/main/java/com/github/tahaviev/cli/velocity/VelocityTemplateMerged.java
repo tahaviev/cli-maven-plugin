@@ -7,8 +7,17 @@ import java.util.function.Supplier;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 
+/**
+ * Merged velocity template.
+ */
 public final class VelocityTemplateMerged extends Delegated<String> {
 
+    /**
+     * Constructor.
+     *
+     * @param template template
+     * @param context context
+     */
     public VelocityTemplateMerged(
         final Supplier<? extends Template> template,
         final Supplier<? extends Map<? extends Object, ? extends Object>> context

@@ -7,11 +7,19 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
 
+/**
+ * Help lines for sub commands.
+ */
 public final class HelpLinesForCommandSubCommands extends Delegated<List<String>> {
 
+    /**
+     * Constructor.
+     *
+     * @param supplier command factory
+     * @param nameWidth sub command name width
+     */
     public HelpLinesForCommandSubCommands(
-        final Supplier<? extends Command> supplier,
-        final int nameWidth
+        final Supplier<? extends Command> supplier, final int nameWidth
     ) {
         super(
             () -> {
@@ -33,6 +41,11 @@ public final class HelpLinesForCommandSubCommands extends Delegated<List<String>
         );
     }
 
+    /**
+     * Constructor.
+     *
+     * @param command sub command name width
+     */
     public HelpLinesForCommandSubCommands(final Command command) {
         this(() -> command, 15);
     }

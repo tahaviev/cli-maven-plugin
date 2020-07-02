@@ -1,23 +1,28 @@
 package com.github.tahaviev.cli.util;
 
 import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.function.Supplier;
 
+/**
+ * Output stream from a file.
+ */
 public final class OutputFromFile extends Delegated<OutputStream> {
 
-    public OutputFromFile(final Supplier<? extends File> supplier) {
+    /**
+     * Constructor.
+     *
+     * @param file file
+     */
+    public OutputFromFile(final Supplier<? extends Path> file) {
         super(
             () -> {
-                final var file = supplier.get();
                 try {
-                    file.getParentFile().mkdirs();
-                    file.createNewFile();
                     return new BufferedOutputStream(
-                        new FileOutputStream(file)
+                        Files.newOutputStream(file.get())
                     );
                 } catch (final IOException ex) {
                     throw new RuntimeException("cannot open file " + file, ex);

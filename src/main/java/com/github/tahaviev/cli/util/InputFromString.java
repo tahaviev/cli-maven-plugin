@@ -4,11 +4,17 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.function.Supplier;
 
+/**
+ * Input stream from a string.
+ */
 public final class InputFromString extends Delegated<InputStream> {
 
-    public InputFromString(
-        final Supplier<String> string
-    ) {
+    /**
+     * Constructor.
+     *
+     * @param string string
+     */
+    public InputFromString(final Supplier<String> string) {
         super(
             () -> new ByteArrayInputStream(string.get().getBytes())
         );

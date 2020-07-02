@@ -13,8 +13,16 @@ import org.junit.jupiter.api.io.TempDir;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 
+/**
+ * {@link CommandLineCodeDefault} tests.
+ */
 public final class CommandLineCodeDefaultTest {
 
+    /**
+     * Can be compiled without errors.
+     *
+     * @param output output for compiled classes
+     */
     @Test
     public void compilesWithoutErrors(@TempDir final File output) {
         assertThat(
@@ -26,6 +34,9 @@ public final class CommandLineCodeDefaultTest {
         );
     }
 
+    /**
+     * Cannot throw an exception on valid input.
+     */
     @Test
     public void doesNotThrowAnException() {
         assertThat(
@@ -37,8 +48,14 @@ public final class CommandLineCodeDefaultTest {
         );
     }
 
+    /**
+     * Test config.
+     */
     private static final class Config extends Delegated<Map<String, Object>> {
 
+        /**
+         * Constructor.
+         */
         public Config() {
             super(
                 new MapWith<>(

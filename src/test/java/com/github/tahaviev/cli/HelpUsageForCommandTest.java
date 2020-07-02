@@ -10,10 +10,16 @@ import org.junit.jupiter.api.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
+/**
+ * {@link HelpUsageForCommand} tests.
+ */
 public final class HelpUsageForCommandTest {
 
+    /**
+     * Can produce correct help for root command.
+     */
     @Test
-    public void worksForRootCommand() {
+    public void producesCorrectHelpForRootCommand() {
         assertThat(
             new HelpUsageForCommand.FromAncestorMap(
                 new JAXBUnmarshalledFromInput.Text<>(
@@ -32,8 +38,11 @@ public final class HelpUsageForCommandTest {
         );
     }
 
+    /**
+     * Can produce correct help for sub command.
+     */
     @Test
-    public void worksForSubCommand() {
+    public void producesCorrectHelpForSubCommand() {
         assertThat(
             new HelpUsageForCommand(
                 new JAXBUnmarshalledFromInput.Text<>(

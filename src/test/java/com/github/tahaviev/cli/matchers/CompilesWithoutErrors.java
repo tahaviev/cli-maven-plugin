@@ -13,11 +13,27 @@ import javax.tools.ToolProvider;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
+/**
+ * Java code, which compiles without errors.
+ */
 public final class CompilesWithoutErrors extends TypeSafeDiagnosingMatcher<Supplier<String>> {
 
+    /**
+     * Class name.
+     */
     private final String name;
+
+    /**
+     * Output for compiled classes.
+     */
     private final File output;
 
+    /**
+     * Constructor.
+     *
+     * @param name {@link #name}
+     * @param output {@link #output}
+     */
     public CompilesWithoutErrors(final String name, final File output) {
         this.name = name;
         this.output = output;
@@ -25,33 +41,39 @@ public final class CompilesWithoutErrors extends TypeSafeDiagnosingMatcher<Suppl
 
     @Override
     protected boolean matchesSafely(final Supplier<String> code, final Description mismatch) {
-        final var compiler = ToolProvider.getSystemJavaCompiler();
-        final var manager = compiler.getStandardFileManager(null, null, null);
-        try {
-            manager.setLocation(StandardLocation.CLASS_OUTPUT, List.of(this.output));
-        } catch (final IOException ex) {
-            throw new RuntimeException("cannot set location for class output: " + this.output, ex);
-        }
         final var errors = new ArrayList<String>();
-        compiler.getTask(
-            null,
-            manager,
-            diagnostic -> errors.add(diagnostic.toString()),
-            null,
-            null,
-            List.of(
-                new SimpleJavaFileObject(
-                    URI.create("string:///" + this.name + ".java"),
-                    JavaFileObject.Kind.SOURCE
-                ) {
+        final var compiler = ToolProvider.getSystemJavaCompiler();
+        try (var manager = compiler.getStandardFileManager(null, null, null)) {
+            try {
+                manager.setLocation(StandardLocation.CLASS_OUTPUT, List.of(this.output));
+            } catch (final IOException ex) {
+                throw new RuntimeException(
+                    "cannot set location for class output: " + this.output,
+                    ex
+                );
+            }
+            compiler.getTask(
+                null,
+                manager,
+                diagnostic -> errors.add(diagnostic.toString()),
+                null,
+                null,
+                List.of(
+                    new SimpleJavaFileObject(
+                        URI.create("string:///" + this.name + ".java"),
+                        JavaFileObject.Kind.SOURCE
+                    ) {
 
-                    @Override
-                    public CharSequence getCharContent(final boolean encoding) {
-                        return code.get();
+                        @Override
+                        public CharSequence getCharContent(final boolean encoding) {
+                            return code.get();
+                        }
                     }
-                }
-            )
-        ).call();
+                )
+            ).call();
+        } catch (final IOException ex) {
+            throw new RuntimeException(ex);
+        }
         if (!errors.isEmpty()) {
             mismatch.appendValueList("\n", "\n", "\n", errors);
         }

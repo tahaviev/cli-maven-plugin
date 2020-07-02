@@ -8,8 +8,19 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+/**
+ * Map for commands.
+ *
+ * @param <V> map value type
+ */
 public final class MapForCommands<V> extends Delegated<Map<Command, V>> {
 
+    /**
+     * Constructor.
+     *
+     * @param root command root factory
+     * @param function function from a command to a map value
+     */
     public MapForCommands(
         final Supplier<? extends Command> root,
         final Function<? super Command, ? extends Supplier<V>> function
@@ -23,6 +34,14 @@ public final class MapForCommands<V> extends Delegated<Map<Command, V>> {
         );
     }
 
+    /**
+     * Fills result map.
+     *
+     * @param command command
+     * @param function function from a command to a map value
+     * @param result result map
+     * @param <V> map value type
+     */
     private static <V> void walk(
         final Command command,
         final Function<? super Command, ? extends Supplier<V>> function,

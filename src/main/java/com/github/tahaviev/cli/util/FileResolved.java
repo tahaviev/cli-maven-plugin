@@ -1,20 +1,36 @@
 package com.github.tahaviev.cli.util;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.function.Supplier;
 
-public final class FileResolved extends Delegated<File> {
+/**
+ * Resolved file.
+ */
+public final class FileResolved extends Delegated<Path> {
 
+    /**
+     * Constructor.
+     *
+     * @param parent parent file
+     * @param child child file name
+     */
     public FileResolved(
-        final Supplier<? extends File> parent, final Supplier<String> child
+        final Supplier<? extends Path> parent, final Supplier<String> child
     ) {
         super(
-            () -> new File(parent.get(), child.get())
+            () -> parent.get().resolve(child.get())
         );
     }
 
+    /**
+     * Constructor.
+     *
+     * @param parent parent file
+     * @param child child file name
+     */
     public FileResolved(final File parent, final Supplier<String> child) {
-        this(() -> parent, child);
+        this(parent::toPath, child);
     }
 
 }

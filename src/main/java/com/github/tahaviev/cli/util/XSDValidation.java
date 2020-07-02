@@ -7,8 +7,17 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.SchemaFactory;
 import org.xml.sax.SAXException;
 
+/**
+ * XSD validation process.
+ */
 public final class XSDValidation extends RunnableDelegated {
 
+    /**
+     * Constructor.
+     *
+     * @param xml xml input
+     * @param xsd xsd
+     */
     public XSDValidation(
         final Supplier<? extends InputStream> xml,
         final Supplier<? extends InputStream> xsd
@@ -26,13 +35,6 @@ public final class XSDValidation extends RunnableDelegated {
                 }
             }
         );
-    }
-
-    public XSDValidation(
-        final InputStream xml,
-        final Supplier<? extends InputStream> xsd
-    ) {
-        this(() -> xml, xsd);
     }
 
 }

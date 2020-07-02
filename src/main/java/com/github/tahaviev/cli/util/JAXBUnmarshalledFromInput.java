@@ -8,8 +8,19 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.transform.stream.StreamSource;
 
+/**
+ * JAXB object from input stream.
+ *
+ * @param <T> result type
+ */
 public final class JAXBUnmarshalledFromInput<T> extends Delegated<T> {
 
+    /**
+     * Constructor.
+     *
+     * @param input input stream
+     * @param clazz object type
+     */
     public JAXBUnmarshalledFromInput(
         final Supplier<? extends InputStream> input,
         final Class<? extends T> clazz
@@ -31,11 +42,21 @@ public final class JAXBUnmarshalledFromInput<T> extends Delegated<T> {
         );
     }
 
+    /**
+     * JAXB object from text.
+     *
+     * @param <T> result type
+     */
     public static final class Text<T> extends Delegated<T> {
 
+        /**
+         * Constructor.
+         *
+         * @param input input text
+         * @param clazz object type
+         */
         public Text(
-            final Supplier<String> input,
-            final Class<? extends T> clazz
+            final Supplier<String> input, final Class<? extends T> clazz
         ) {
             super(
                 new JAXBUnmarshalledFromInput<>(
@@ -45,10 +66,13 @@ public final class JAXBUnmarshalledFromInput<T> extends Delegated<T> {
             );
         }
 
-        public Text(
-            final String input,
-            final Class<? extends T> clazz
-        ) {
+        /**
+         * Constructor.
+         *
+         * @param input input text
+         * @param clazz object type
+         */
+        public Text(final String input, final Class<? extends T> clazz) {
             this(() -> input, clazz);
         }
 

@@ -14,10 +14,16 @@ import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasEntry;
 
+/**
+ * {@link MappingCommandToAncestors} tests.
+ */
 public final class MappingCommandToAncestorsTest {
 
+    /**
+     * Can produce correct ancestors.
+     */
     @Test
-    public void works() {
+    public void producesCorrectAncestors() {
         assertThat(
             new MappingCommandToAncestors(
                 new JAXBUnmarshalledFromInput.Text<>(

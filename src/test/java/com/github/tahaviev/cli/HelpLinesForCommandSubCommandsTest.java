@@ -11,8 +11,14 @@ import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.matchesRegex;
 
+/**
+ * {@link HelpLinesForCommandSubCommands} tests.
+ */
 public final class HelpLinesForCommandSubCommandsTest {
 
+    /**
+     * Can produce correct lines.
+     */
     @Test
     public void producesCorrectLines() {
         assertThat(

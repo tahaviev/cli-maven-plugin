@@ -14,8 +14,14 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.matchesRegex;
 
+/**
+ * {@link HelpLinesForOption} tests.
+ */
 public final class HelpLinesForOptionTest {
 
+    /**
+     * Can produce correct line.
+     */
     @Test
     public void producesCorrectLine() {
         assertThat(
@@ -39,6 +45,9 @@ public final class HelpLinesForOptionTest {
         );
     }
 
+    /**
+     * Can produce correct lines on long description.
+     */
     @Test
     public void producesCorrectLinesOnLongDescription() {
         assertThat(

@@ -17,8 +17,17 @@ import java.io.InputStream;
 import java.util.Map;
 import java.util.function.Supplier;
 
+/**
+ * Default factory for command line code.
+ */
 public final class CommandLineCodeDefault extends Delegated<String> {
 
+    /**
+     * Constructor.
+     *
+     * @param descriptor input stream for xml descriptor
+     * @param configuration velocity context
+     */
     public CommandLineCodeDefault(
         final Supplier<? extends InputStream> descriptor,
         final Supplier<? extends Map<String, Object>> configuration

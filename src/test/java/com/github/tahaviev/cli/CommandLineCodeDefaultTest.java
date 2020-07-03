@@ -51,7 +51,7 @@ public final class CommandLineCodeDefaultTest {
     /**
      * Test config.
      */
-    private static final class Config extends Delegated<Map<String, Object>> {
+    public static final class Config extends Delegated<Map<String, Object>> {
 
         /**
          * Constructor.

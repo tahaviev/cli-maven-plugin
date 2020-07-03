@@ -20,6 +20,7 @@ import java.util.function.Supplier;
 /**
  * Default factory for command line code.
  */
+@SuppressWarnings("checkstyle:LineLength")
 public final class CommandLineCodeDefault extends Delegated<String> {
 
     /**

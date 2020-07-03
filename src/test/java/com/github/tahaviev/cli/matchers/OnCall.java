@@ -32,7 +32,7 @@ public final class OnCall<T, U> extends FeatureMatcher<T, U> {
     }
 
     @Override
-    protected U featureValueOf(final T actual) {
+    public U featureValueOf(final T actual) {
         return this.call.apply(actual);
     }
 

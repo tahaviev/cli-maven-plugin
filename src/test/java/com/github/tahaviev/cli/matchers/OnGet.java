@@ -21,7 +21,7 @@ public final class OnGet<T> extends FeatureMatcher<Supplier<? extends T>, T> {
     }
 
     @Override
-    protected T featureValueOf(final Supplier<? extends T> actual) {
+    public T featureValueOf(final Supplier<? extends T> actual) {
         return actual.get();
     }
 

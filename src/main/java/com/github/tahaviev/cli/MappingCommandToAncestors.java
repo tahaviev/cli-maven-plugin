@@ -2,6 +2,7 @@ package com.github.tahaviev.cli;
 
 import com.github.tahaviev.cli.models.Command;
 import com.github.tahaviev.cli.util.Delegated;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -24,34 +25,27 @@ public final class MappingCommandToAncestors extends Delegated<Map<Command, List
         super(
             () -> {
                 final var result = new HashMap<Command, List<Command>>();
-                MappingCommandToAncestors.walk(root.get(), result);
+                final var deque = new ArrayDeque<Command>();
+                deque.push(root.get());
+                while (!deque.isEmpty()) {
+                    final var command = deque.pop();
+                    if (command.getCommands() != null) {
+                        for (final var child : command.getCommands().getCommand()) {
+                            final var ancestors = new ArrayList<Command>();
+                            ancestors.addAll(
+                                Objects.requireNonNullElseGet(
+                                    result.get(command), Collections::emptyList
+                                )
+                            );
+                            ancestors.add(command);
+                            result.put(child, Collections.unmodifiableList(ancestors));
+                            deque.push(child);
+                        }
+                    }
+                }
                 return Collections.unmodifiableMap(result);
             }
         );
-    }
-
-    /**
-     * Fills result map.
-     *
-     * @param parent command
-     * @param result result map
-     */
-    private static void walk(
-        final Command parent,
-        final Map<? super Command, List<Command>> result
-    ) {
-        if (parent.getCommands() == null) {
-            return;
-        }
-        for (final var child : parent.getCommands().getCommand()) {
-            final var ancestors = new ArrayList<Command>();
-            ancestors.addAll(
-                Objects.requireNonNullElseGet(result.get(parent), Collections::emptyList)
-            );
-            ancestors.add(parent);
-            result.put(child, Collections.unmodifiableList(ancestors));
-            MappingCommandToAncestors.walk(child, result);
-        }
     }
 
 }

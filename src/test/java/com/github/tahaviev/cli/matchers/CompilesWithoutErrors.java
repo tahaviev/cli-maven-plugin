@@ -40,7 +40,7 @@ public final class CompilesWithoutErrors extends TypeSafeDiagnosingMatcher<Suppl
     }
 
     @Override
-    protected boolean matchesSafely(final Supplier<String> code, final Description mismatch) {
+    public boolean matchesSafely(final Supplier<String> code, final Description mismatch) {
         final var errors = new ArrayList<String>();
         final var compiler = ToolProvider.getSystemJavaCompiler();
         try (var manager = compiler.getStandardFileManager(null, null, null)) {

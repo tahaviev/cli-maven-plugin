@@ -62,6 +62,32 @@
     <build>
         <plugins>
             <plugin>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>3.1.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.puppycrawl.tools</groupId>
+                        <artifactId>checkstyle</artifactId>
+                        <version>8.34</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <configLocation>src/checkstyle/config.xml</configLocation>
+                    <encoding>UTF-8</encoding>
+                    <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                    <sourceDirectories>
+                        <sourceDirectory>${project.build.sourceDirectory}</sourceDirectory>
+                    </sourceDirectories>
+                </configuration>
+            </plugin>
+            <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
@@ -126,15 +152,15 @@
                         <goals>
                             <goal>xjc</goal>
                         </goals>
-                        <configuration>
-                            <encoding>UTF-8</encoding>
-                            <packageName>com.github.tahaviev.cli.models</packageName>
-                            <sources>
-                                <source>src/main/resources/cli.xsd</source>
-                            </sources>
-                        </configuration>
                     </execution>
                 </executions>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                    <packageName>com.github.tahaviev.cli.models</packageName>
+                    <sources>
+                        <source>src/main/resources/cli.xsd</source>
+                    </sources>
+                </configuration>
             </plugin>
         </plugins>
     </build>

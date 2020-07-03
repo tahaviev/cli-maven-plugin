@@ -22,7 +22,7 @@ public final class Writing extends RunnableDelegated {
     ) {
         super(
             () -> {
-                try(var in = input.get(); var out = output.get()) {
+                try (var in = input.get(); var out = output.get()) {
                     in.transferTo(out);
                 } catch (final IOException ex) {
                     throw new RuntimeException(ex);

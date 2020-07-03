@@ -11,7 +11,7 @@ import org.hamcrest.TypeSafeDiagnosingMatcher;
  *
  * @param <T> object type
  */
-@SuppressWarnings("PMD.AvoidCatchingGenericException")
+@SuppressWarnings({"PMD.AvoidCatchingGenericException", "checkstyle:IllegalCatch"})
 public final class DoesNotThrowExceptionOnCall<T> extends TypeSafeDiagnosingMatcher<T> {
 
     /**
@@ -29,7 +29,7 @@ public final class DoesNotThrowExceptionOnCall<T> extends TypeSafeDiagnosingMatc
     }
 
     @Override
-    protected boolean matchesSafely(final T item, final Description mismatch) {
+    public boolean matchesSafely(final T item, final Description mismatch) {
         boolean result;
         try {
             this.call.accept(item);

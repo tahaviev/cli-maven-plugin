@@ -2,7 +2,7 @@ package com.github.tahaviev.cli;
 
 import com.github.tahaviev.cli.matchers.OnGet;
 import com.github.tahaviev.cli.models.Command;
-import com.github.tahaviev.cli.util.JAXBUnmarshalledFromInput;
+import com.github.tahaviev.cli.util.JAXBObjectFromInput;
 import java.util.Collection;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -26,7 +26,7 @@ public final class HelpLinesForOptionTest {
     public void producesCorrectLine() {
         assertThat(
             new HelpLinesForOption(
-                new JAXBUnmarshalledFromInput.Text<>(
+                new JAXBObjectFromInput.Text<>(
                     "<option name='name' type='int' description='description'/>",
                     Command.Options.Option.class
                 )
@@ -52,7 +52,7 @@ public final class HelpLinesForOptionTest {
     public void producesCorrectLinesOnLongDescription() {
         assertThat(
             new HelpLinesForOption(
-                new JAXBUnmarshalledFromInput.Text<>(
+                new JAXBObjectFromInput.Text<>(
                     "<option name='name' description='long description'/>",
                     Command.Options.Option.class
                 ),

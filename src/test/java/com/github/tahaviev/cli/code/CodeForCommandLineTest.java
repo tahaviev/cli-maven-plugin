@@ -1,4 +1,4 @@
-package com.github.tahaviev.cli;
+package com.github.tahaviev.cli.code;
 
 import com.github.tahaviev.cli.matchers.CompilesWithoutErrors;
 import com.github.tahaviev.cli.matchers.DoesNotThrowExceptionOnCall;
@@ -14,9 +14,9 @@ import org.junit.jupiter.api.io.TempDir;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
- * {@link CommandLineCodeDefault} tests.
+ * {@link CodeForCommandLine} tests.
  */
-public final class CommandLineCodeDefaultTest {
+public final class CodeForCommandLineTest {
 
     /**
      * Can be compiled without errors.
@@ -26,9 +26,9 @@ public final class CommandLineCodeDefaultTest {
     @Test
     public void compilesWithoutErrors(@TempDir final File output) {
         assertThat(
-            new CommandLineCodeDefault(
+            new CodeForCommandLine(
                 new InputFromClasspath("test.xml"),
-                new CommandLineCodeDefaultTest.Config()
+                new CodeForCommandLineTest.Config()
             ),
             new CompilesWithoutErrors("CommandLine", output)
         );
@@ -40,9 +40,9 @@ public final class CommandLineCodeDefaultTest {
     @Test
     public void doesNotThrowAnException() {
         assertThat(
-            new CommandLineCodeDefault(
+            new CodeForCommandLine(
                 new InputFromClasspath("test.xml"),
-                new CommandLineCodeDefaultTest.Config()
+                new CodeForCommandLineTest.Config()
             ),
             new DoesNotThrowExceptionOnCall<>(Supplier::get)
         );

@@ -29,10 +29,20 @@
             <version>2.2.1</version>
         </dependency>
         <dependency>
+            <groupId>org.apache.maven.doxia</groupId>
+            <artifactId>doxia-module-xdoc</artifactId>
+            <version>1.9.1</version>
+        </dependency>
+        <dependency>
             <groupId>org.apache.maven.plugin-tools</groupId>
             <artifactId>maven-plugin-annotations</artifactId>
             <version>3.6.0</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven.reporting</groupId>
+            <artifactId>maven-reporting-impl</artifactId>
+            <version>3.0.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.velocity</groupId>
@@ -61,6 +71,28 @@
 
     <build>
         <plugins>
+            <plugin>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.1.2</version>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.apache.maven.doxia</groupId>
+                                    <artifactId>doxia-module-xdoc</artifactId>
+                                    <version>1.9.1</version>
+                                </artifactItem>
+                            </artifactItems>
+                            <includes>xdoc-2.0.xsd</includes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <version>3.1.1</version>
@@ -148,18 +180,36 @@
                 <version>2.5.0</version>
                 <executions>
                     <execution>
-                        <phase>generate-sources</phase>
+                        <id>cli</id>
                         <goals>
                             <goal>xjc</goal>
                         </goals>
+                        <configuration>
+                            <packageName>com.github.tahaviev.cli.models</packageName>
+                            <sources>
+                                <source>src/main/resources/cli.xsd</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>xdoc</id>
+                        <goals>
+                            <goal>xjc</goal>
+                        </goals>
+                        <configuration>
+                            <packageName>com.github.tahaviev.cli.models.xdoc</packageName>
+                            <sources>
+                                <source>${project.build.directory}/dependency/xdoc-2.0.xsd</source>
+                            </sources>
+                            <xjbSources>
+                                <xjbSource>src/xjb/xdoc.xjb</xjbSource>
+                            </xjbSources>
+                        </configuration>
                     </execution>
                 </executions>
                 <configuration>
+                    <clearOutputDir>false</clearOutputDir>
                     <encoding>UTF-8</encoding>
-                    <packageName>com.github.tahaviev.cli.models</packageName>
-                    <sources>
-                        <source>src/main/resources/cli.xsd</source>
-                    </sources>
                 </configuration>
             </plugin>
         </plugins>

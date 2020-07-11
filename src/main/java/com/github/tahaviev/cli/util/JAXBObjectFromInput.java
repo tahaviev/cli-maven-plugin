@@ -13,7 +13,7 @@ import javax.xml.transform.stream.StreamSource;
  *
  * @param <T> result type
  */
-public final class JAXBUnmarshalledFromInput<T> extends Delegated<T> {
+public final class JAXBObjectFromInput<T> extends Delegated<T> {
 
     /**
      * Constructor.
@@ -21,7 +21,7 @@ public final class JAXBUnmarshalledFromInput<T> extends Delegated<T> {
      * @param input input stream
      * @param clazz object type
      */
-    public JAXBUnmarshalledFromInput(
+    public JAXBObjectFromInput(
         final Supplier<? extends InputStream> input,
         final Class<? extends T> clazz
     ) {
@@ -59,7 +59,7 @@ public final class JAXBUnmarshalledFromInput<T> extends Delegated<T> {
             final Supplier<String> input, final Class<? extends T> clazz
         ) {
             super(
-                new JAXBUnmarshalledFromInput<>(
+                new JAXBObjectFromInput<>(
                     () -> new ByteArrayInputStream(input.get().getBytes()),
                     clazz
                 )

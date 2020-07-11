@@ -1,4 +1,4 @@
-package com.github.tahaviev.cli.format;
+package com.github.tahaviev.cli.code;
 
 import com.github.tahaviev.cli.util.Delegated;
 import com.google.googlejavaformat.java.Formatter;
@@ -8,14 +8,14 @@ import java.util.function.Supplier;
 /**
  * Formatted java code.
  */
-public final class JavaCodeFormatted extends Delegated<String> {
+public final class CodeFormatted extends Delegated<String> {
 
     /**
      * Constructor.
      *
      * @param code code
      */
-    public JavaCodeFormatted(final Supplier<String> code) {
+    public CodeFormatted(final Supplier<String> code) {
         super(
             () -> {
                 try {

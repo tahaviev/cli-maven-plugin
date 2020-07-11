@@ -2,7 +2,7 @@ package com.github.tahaviev.cli;
 
 import com.github.tahaviev.cli.matchers.OnGet;
 import com.github.tahaviev.cli.models.Command;
-import com.github.tahaviev.cli.util.JAXBUnmarshalledFromInput;
+import com.github.tahaviev.cli.util.JAXBObjectFromInput;
 import com.github.tahaviev.cli.util.StringJoined;
 import com.github.tahaviev.cli.util.Transformed;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,7 @@ public final class HelpUsageForCommandTest {
     public void producesCorrectHelpForRootCommand() {
         assertThat(
             new HelpUsageForCommand.FromAncestorMap(
-                new JAXBUnmarshalledFromInput.Text<>(
+                new JAXBObjectFromInput.Text<>(
                     new StringJoined(
                         "<command name='A' input='i'>",
                         "  <options/>",
@@ -45,12 +45,12 @@ public final class HelpUsageForCommandTest {
     public void producesCorrectHelpForSubCommand() {
         assertThat(
             new HelpUsageForCommand(
-                new JAXBUnmarshalledFromInput.Text<>(
+                new JAXBObjectFromInput.Text<>(
                     "<command name='A'/>",
                     Command.class
                 ),
                 new Transformed<>(
-                    new JAXBUnmarshalledFromInput.Text<>(
+                    new JAXBObjectFromInput.Text<>(
                         new StringJoined(
                             "<commands>",
                             "  <command name='B'/>",

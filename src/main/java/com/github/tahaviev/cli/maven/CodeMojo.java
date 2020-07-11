@@ -1,6 +1,6 @@
 package com.github.tahaviev.cli.maven;
 
-import com.github.tahaviev.cli.CommandLineCodeDefault;
+import com.github.tahaviev.cli.code.CodeForCommandLine;
 import com.github.tahaviev.cli.util.DirectoryNameFromPackage;
 import com.github.tahaviev.cli.util.FileResolved;
 import com.github.tahaviev.cli.util.FileWithCreatedDirectoriesIfNotExists;
@@ -74,7 +74,7 @@ public final class CodeMojo extends AbstractMojo {
     public void execute() {
         new Writing(
             new InputFromString(
-                new CommandLineCodeDefault(
+                new CodeForCommandLine(
                     new InputFromFile(this.descriptor),
                     new MapWith<>(
                         new MapWith<>(

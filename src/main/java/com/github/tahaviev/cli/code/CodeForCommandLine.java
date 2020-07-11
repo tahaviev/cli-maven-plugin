@@ -1,12 +1,17 @@
-package com.github.tahaviev.cli;
+package com.github.tahaviev.cli.code;
 
-import com.github.tahaviev.cli.format.JavaCodeFormatted;
+import com.github.tahaviev.cli.HelpLinesForCommandSubCommands;
+import com.github.tahaviev.cli.HelpLinesForOption;
+import com.github.tahaviev.cli.HelpUsageForCommand;
+import com.github.tahaviev.cli.MapForCommands;
+import com.github.tahaviev.cli.MapForOptions;
+import com.github.tahaviev.cli.MappingCommandToAncestors;
 import com.github.tahaviev.cli.models.Command;
 import com.github.tahaviev.cli.util.Cached;
 import com.github.tahaviev.cli.util.ClassFromName;
 import com.github.tahaviev.cli.util.Delegated;
 import com.github.tahaviev.cli.util.InputFromClasspath;
-import com.github.tahaviev.cli.util.JAXBUnmarshalledFromInput;
+import com.github.tahaviev.cli.util.JAXBObjectFromInput;
 import com.github.tahaviev.cli.util.MapWith;
 import com.github.tahaviev.cli.util.SideEffected;
 import com.github.tahaviev.cli.util.XSDValidation;
@@ -21,7 +26,7 @@ import java.util.function.Supplier;
  * Default factory for command line code.
  */
 @SuppressWarnings("checkstyle:LineLength")
-public final class CommandLineCodeDefault extends Delegated<String> {
+public final class CodeForCommandLine extends Delegated<String> {
 
     /**
      * Constructor.
@@ -29,14 +34,14 @@ public final class CommandLineCodeDefault extends Delegated<String> {
      * @param descriptor input stream for xml descriptor
      * @param configuration velocity context
      */
-    public CommandLineCodeDefault(
+    public CodeForCommandLine(
         final Supplier<? extends InputStream> descriptor,
         final Supplier<? extends Map<String, Object>> configuration
     ) {
         super(
             () -> {
                 final var root = new Cached<>(
-                    new JAXBUnmarshalledFromInput<>(
+                    new JAXBObjectFromInput<>(
                         new SideEffected<>(
                             new XSDValidation(
                                 descriptor,
@@ -50,7 +55,7 @@ public final class CommandLineCodeDefault extends Delegated<String> {
                 final var ancestors = new Cached<>(
                     new MappingCommandToAncestors(root)
                 );
-                return new JavaCodeFormatted(
+                return new CodeFormatted(
                     new VelocityTemplateMerged(
                         new VelocityTemplate(
                             new VelocityEngineLazy(

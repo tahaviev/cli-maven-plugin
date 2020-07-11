@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 /**
  * Help usage for a command.
@@ -27,15 +26,7 @@ public final class HelpUsageForCommand extends Delegated<String> {
             () -> {
                 final var builder = new StringBuilder();
                 final var command = supplier.get();
-                builder
-                    .append(
-                        ancestors
-                            .get()
-                            .stream()
-                            .map(ancestor -> new InputForCommand(ancestor).get() + ' ')
-                            .collect(Collectors.joining())
-                    )
-                    .append(new InputForCommand(command).get());
+                builder.append(new InputForCommandFull(command, ancestors).get());
                 if (command.getOptions() != null) {
                     builder.append(" <OPTIONS>");
                 }
@@ -49,6 +40,19 @@ public final class HelpUsageForCommand extends Delegated<String> {
                 return builder.toString();
             }
         );
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param command command
+     * @param ancestors command ancestors
+     */
+    public HelpUsageForCommand(
+        final Command command,
+        final Supplier<? extends List<Command>> ancestors
+    ) {
+        this(() -> command, ancestors);
     }
 
     /**

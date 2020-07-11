@@ -1,0 +1,13 @@
+<bindings
+        version="2.1"
+        xmlns="http://java.sun.com/xml/ns/jaxb"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <bindings schemaLocation="../../target/dependency/xdoc-2.0.xsd" node="/xs:schema">
+        <bindings node="xs:attributeGroup[@name='i18n']/xs:attribute[@ref='xml:lang']">
+            <property name="xmlLang"/>
+        </bindings>
+        <bindings node="xs:element[@name='bdo']/xs:complexType/xs:complexContent/xs:extension/xs:attribute[@ref='xml:lang']">
+            <property name="xmlLang"/>
+        </bindings>
+    </bindings>
+</bindings>

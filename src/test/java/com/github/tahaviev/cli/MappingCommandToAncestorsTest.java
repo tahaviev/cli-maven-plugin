@@ -3,7 +3,7 @@ package com.github.tahaviev.cli;
 import com.github.tahaviev.cli.matchers.OnCall;
 import com.github.tahaviev.cli.matchers.OnGet;
 import com.github.tahaviev.cli.models.Command;
-import com.github.tahaviev.cli.util.JAXBUnmarshalledFromInput;
+import com.github.tahaviev.cli.util.JAXBObjectFromInput;
 import com.github.tahaviev.cli.util.StringJoined;
 import org.junit.jupiter.api.Test;
 
@@ -26,7 +26,7 @@ public final class MappingCommandToAncestorsTest {
     public void producesCorrectAncestors() {
         assertThat(
             new MappingCommandToAncestors(
-                new JAXBUnmarshalledFromInput.Text<>(
+                new JAXBObjectFromInput.Text<>(
                     new StringJoined(
                         "<command name='A'>",
                         "  <commands>",

@@ -19,11 +19,35 @@ public static final class Utils {
         }
     }
 
+    public static final class Cached<T> extends Delegated<T> {
+
+        public Cached(
+            final java.util.function.Supplier<? extends T> origin,
+            final java.util.concurrent.atomic.AtomicReference<T> cache
+        ) {
+            super(
+                () -> {
+                    final var cached = cache.get();
+                    if (cached == null) {
+                        final var value = origin.get();
+                        cache.set(value);
+                        return value;
+                    }
+                    return cached;
+                }
+            );
+        }
+
+        public Cached(final java.util.function.Supplier<? extends T> origin) {
+            this(origin, new java.util.concurrent.atomic.AtomicReference<>());
+        }
+    }
+
     public static abstract class Delegated<T> implements java.util.function.Supplier<T> {
 
         private final java.util.function.Supplier<? extends T> delegate;
 
-        protected Delegated(final java.util.function.Supplier<? extends T>  delegate) {
+        protected Delegated(final java.util.function.Supplier<? extends T> delegate) {
             this.delegate = delegate;
         }
 

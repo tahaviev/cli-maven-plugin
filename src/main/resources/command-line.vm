@@ -2,6 +2,7 @@ package $package;
 public final class $class {
     #command($root)
     #parse('command-data.vm')
+    #parse('command-line-fluent.vm')
     #parse('utils.vm')
 }
 #macro(command $command)

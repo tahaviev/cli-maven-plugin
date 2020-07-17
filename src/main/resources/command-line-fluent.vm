@@ -1,0 +1,102 @@
+public static final class $fluentClass {
+    #macro(fluent $command)
+        public static final class $StringUtils.capitalize($command.name) {
+
+            private final String[] arguments;
+
+            private final java.util.function.Supplier<CommandData> data;
+
+            public $StringUtils.capitalize($command.name)(final String... arguments) {
+                this.arguments = arguments;
+                this.data = new Utils.Cached<>(
+                    new $class .$commandToFullClassName.get($command) .ParsedData(arguments)
+                );
+            }
+
+            #if($command.argument)
+                #if($command.argument.multiple)
+                    public java.util.List<String> arguments() {
+                        return this.data.get().arguments;
+                    }
+                #else
+                    public String argument() {
+                        return new $class .$commandToFullClassName.get($command) .Argument(this.data).get();
+                    }
+
+                    public boolean argumentProvided() {
+                        return new $class .$commandToFullClassName.get($command) .Argument.Provided(this.data).get();
+                    }
+                #end
+            #end
+
+            public java.util.List<String> errors() {
+                return new $class .$commandToFullClassName.get($command) .Errors(this.data).get();
+            }
+
+            public void helpPrint() {
+                new $class .$commandToFullClassName.get($command) .Help.Print().run();
+            }
+
+            public boolean helpRequested() {
+                return new $class .$commandToFullClassName.get($command) .Help.Requested(this.data).get();
+            }
+
+            #if($command.options)
+                public Options options() {
+                    return new Options(this.data);
+                }
+
+                public static final class Options {
+
+                    private final java.util.function.Supplier<CommandData> data;
+
+                    public Options(final java.util.function.Supplier<CommandData> data) {
+                        this.data = data;
+                    }
+
+                    #foreach($option in $command.options.option)
+                        #if ($option.type.equals('list'))
+                            #set($return = 'java.util.List<String>')
+                        #elseif ($option.type.equals('string'))
+                            #set($return = 'String')
+                        #else
+                            #set($return = $option.type)
+                        #end
+                        public $return $option.name () {
+                            return new $class .$commandToFullClassName.get($command) .Options. $StringUtils.capitalize($option.name) (this.data).get();
+                        }
+
+                        public boolean $option.name#[[Provided]]# () {
+                            return new $class .$commandToFullClassName.get($command) .Options. $StringUtils.capitalize($option.name) .Provided(this.data).get();
+                        }
+                    #end
+                }
+            #end
+
+            public boolean requested() {
+                return this.data.get().requested;
+            }
+
+            #if($command == $root && $version)
+                public void versionPrint() {
+                    new $class .$commandToFullClassName.get($command) .Version.Print().run();
+                }
+
+                public boolean versionRequested() {
+                    return this.data.get().version;
+                }
+            #end
+
+            #foreach($subcommand in $command.commands.command)
+                public $StringUtils.capitalize($subcommand.name) $subcommand.name () {
+                    return new $StringUtils.capitalize($subcommand.name)(this.arguments);
+                }
+            #end
+
+            #foreach($subcommand in $command.commands.command)
+                #fluent($subcommand)
+            #end
+        }
+    #end
+    #fluent($root)
+}

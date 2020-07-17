@@ -1,5 +1,6 @@
 package com.github.tahaviev.cli.code;
 
+import com.github.tahaviev.cli.FullClassNameForCommand;
 import com.github.tahaviev.cli.HelpLinesForCommandSubCommands;
 import com.github.tahaviev.cli.HelpLinesForOption;
 import com.github.tahaviev.cli.HelpUsageForCommand;
@@ -73,12 +74,19 @@ public final class CodeForCommandLine extends Delegated<String> {
                                     new MapWith<String, Object>(
                                         new MapWith<String, Object>(
                                             new MapWith<String, Object>(
-                                                configuration,
-                                                "StringUtils",
-                                                new ClassFromName("org.apache.commons.lang.StringUtils")
+                                                new MapWith<String, Object>(
+                                                    configuration,
+                                                    "StringUtils",
+                                                    new ClassFromName("org.apache.commons.lang.StringUtils")
+                                                ),
+                                                "commandToAncestors",
+                                                ancestors
                                             ),
-                                            "commandToAncestors",
-                                            ancestors
+                                            "commandToFullClassName",
+                                            new MapForCommands<>(
+                                                root,
+                                                command -> new FullClassNameForCommand.FromAncestorMap(command, ancestors)
+                                            )
                                         ),
                                         "commandToHelpLinesForSubCommands",
                                         new MapForCommands<>(

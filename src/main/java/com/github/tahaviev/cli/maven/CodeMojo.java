@@ -41,6 +41,12 @@ public final class CodeMojo extends AbstractMojo {
     private String className;
 
     /**
+     * Class name for generated fluent code.
+     */
+    @Parameter(defaultValue = "Fluent")
+    private String fluentClassName;
+
+    /**
      * Path to CLI descriptor.
      */
     @Parameter(defaultValue = "src/cli/cli.xml")
@@ -79,9 +85,13 @@ public final class CodeMojo extends AbstractMojo {
                     new MapWith<>(
                         new MapWith<>(
                             new MapWith<>(
-                                new MapWith<>("build", this.build),
-                                "class",
-                                this.className
+                                new MapWith<>(
+                                    new MapWith<>("build", this.build),
+                                    "class",
+                                    this.className
+                                ),
+                                "fluentClass",
+                                this.fluentClassName
                             ),
                             "package",
                             this.packageName

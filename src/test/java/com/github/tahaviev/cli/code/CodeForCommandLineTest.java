@@ -60,7 +60,11 @@ public final class CodeForCommandLineTest {
             super(
                 new MapWith<>(
                     new MapWith<>(
-                        new MapWith<>("class", "CommandLine"),
+                        new MapWith<>(
+                            new MapWith<>("class", "CommandLine"),
+                            "fluentClass",
+                            "Fluent"
+                        ),
                         "package",
                         "test"
                     ),

@@ -7,6 +7,14 @@
     <version>0.1-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
 
+    <name>CLI Maven Plugin</name>
+    <description>A maven plugin for generating command line parser and documentation</description>
+    <url>https://github.com/tahaviev/cli-maven-plugin</url>
+
+    <issueManagement>
+        <url>https://github.com/tahaviev/cli-maven-plugin/issues</url>
+    </issueManagement>
+
     <dependencies>
         <dependency>
             <groupId>com.google.googlejavaformat</groupId>
@@ -171,6 +179,13 @@
                 </configuration>
             </plugin>
             <plugin>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.9.1</version>
+                <configuration>
+                    <inputEncoding>UTF-8</inputEncoding>
+                </configuration>
+            </plugin>
+            <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M4</version>
             </plugin>
@@ -226,4 +241,27 @@
             </plugin>
         </plugins>
     </build>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <artifactId>maven-changes-plugin</artifactId>
+                <version>2.12.1</version>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>github-report</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+            <plugin>
+                <artifactId>maven-plugin-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>3.1.0</version>
+            </plugin>
+        </plugins>
+    </reporting>
 </project>

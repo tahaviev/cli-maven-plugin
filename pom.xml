@@ -4,7 +4,7 @@
 
     <groupId>com.github.tahaviev</groupId>
     <artifactId>cli-maven-plugin</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>0.1.0</version>
     <packaging>maven-plugin</packaging>
 
     <name>CLI Maven Plugin</name>
@@ -13,7 +13,7 @@
 
     <scm>
         <connection>scm:git:git@github.com:tahaviev/cli-maven-plugin.git</connection>
-        <tag>HEAD</tag>
+        <tag>0.1.0</tag>
     </scm>
     <issueManagement>
         <url>https://github.com/tahaviev/cli-maven-plugin/issues</url>

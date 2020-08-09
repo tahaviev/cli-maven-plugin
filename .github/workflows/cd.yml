@@ -9,6 +9,7 @@ jobs:
   release:
     runs-on: ubuntu-latest
     env:
+      BINTRAY_API_KEY: ${{secrets.BINTRAY_API_KEY}}
       GITHUB_ACTOR: ${{github.actor}}
       GITHUB_PASSWORD: ${{secrets.GH_PASSWORD}}
       GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
@@ -24,4 +25,6 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
-          mvn --batch-mode --settings .maven/settings.xml release:prepare release:perform -DreleaseVersion=${{github.event.inputs.version}}
+          mvn --batch-mode --settings .maven/settings.xml release:prepare release:perform -DreleaseVersion=${{github.event.inputs.version}} -DtagNameFormat=${{github.event.inputs.version}}
+          git checkout ${{github.event.inputs.version}}
+          mvn --activate-profiles deploy --settings .maven/settings.xml clean deploy -DaltDeploymentRepository=bintray::https://api.bintray.com/maven/tahaviev/maven/cli-maven-plugin/;publish=1

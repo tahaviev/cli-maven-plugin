@@ -325,6 +325,7 @@
                             </execution>
                         </executions>
                         <configuration>
+                            <doclint>none</doclint>
                             <encoding>UTF-8</encoding>
                         </configuration>
                     </plugin>

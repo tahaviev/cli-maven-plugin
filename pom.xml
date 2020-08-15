@@ -9,7 +9,14 @@
 
     <name>CLI Maven Plugin</name>
     <description>A maven plugin for generating command line parser and documentation</description>
-    <url>https://github.com/tahaviev/cli-maven-plugin</url>
+    <url>https://tahaviev.github.io/cli-maven-plugin/</url>
+    <inceptionYear>2020</inceptionYear>
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://raw.githubusercontent.com/tahaviev/cli-maven-plugin/master/LICENSE</url>
+        </license>
+    </licenses>
 
     <scm>
         <connection>scm:git:git@github.com:tahaviev/cli-maven-plugin.git</connection>
@@ -18,6 +25,9 @@
     <issueManagement>
         <url>https://github.com/tahaviev/cli-maven-plugin/issues</url>
     </issueManagement>
+    <ciManagement>
+        <url>https://github.com/tahaviev/cli-maven-plugin/actions</url>
+    </ciManagement>
     <distributionManagement>
         <repository>
             <id>github-packages</id>

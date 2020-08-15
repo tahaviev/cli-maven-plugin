@@ -1,4 +1,4 @@
-# CLI maven plugin
+# CLI Maven Plugin
 [![](https://github.com/tahaviev/cli-maven-plugin/workflows/ci/badge.svg)](https://github.com/tahaviev/cli-maven-plugin/actions)
 [![](https://api.bintray.com/packages/tahaviev/maven/cli-maven-plugin/images/download.svg)](https://bintray.com/tahaviev/maven/cli-maven-plugin/_latestVersion)
 [![](https://img.shields.io/github/tag/tahaviev/cli-maven-plugin.svg?label=docs)](https://tahaviev.github.io/cli-maven-plugin/plugin-info.html)

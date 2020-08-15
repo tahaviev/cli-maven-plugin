@@ -12,4 +12,9 @@ jobs:
       - uses: actions/setup-java@v1.3.0
         with:
           java-version: 11
-      - run: mvn site-deploy
+      - uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: maven-${{hashFiles('pom.xml')}}
+          restore-keys: maven-
+      - run: mvn --settings .maven/settings.xml site-deploy
